@@ -270,7 +270,7 @@ for i in range(num_image):
     visualize(img[0])
 plt.show()
 ```
-Although, the images generated looks similar to the input dataset, they look fuzzy. There are several other [GAN]![https://blog.openai.com/generative-models/] network  that you can experiment with and achieve amazing results.
+Although, the images generated looks similar to the input dataset, they look fuzzy. There are several other [GAN](https://blog.openai.com/generative-models/) network  that you can experiment with and achieve amazing results.
 
 # Conclusion
 
