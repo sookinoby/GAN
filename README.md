@@ -1,3 +1,5 @@
+# Generative Model using Apache MXNet
+
 In our previous notebooks, we used a deep learning technique called Convolution Neural Network (CNN) to classify text and images.  A CNN is an example of a Discriminative Model, which creates a  decision boundary to classify a given input signal (data).
 
 Deep learning models in recent times have been used to create even more powerful and useful models called Generative Models. A Generative Model doesn’t just create a decision boundary but understands the underlying distribution of values. Using this insight, a generative model can also generate new data or classify a given input data. Here are some examples of Generative Models:
