@@ -138,7 +138,7 @@ def getImageList(base_path,training_folder):
         img_arr = transform(img_arr, target_wd, target_ht)
         img_list.append(img_arr)
     return img_list
-```
+
 base_path = 'brine_datasets/jayleicn/anime-faces/images/'
 img_list = getImageList('brine_datasets/jayleicn/anime-faces/images/',training_fold)
 ```
