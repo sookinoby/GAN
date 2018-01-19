@@ -4,10 +4,9 @@ In our previous notebooks, we used a deep learning technique called Convolution 
 
 Deep learning models in recent times have been used to create even more powerful and useful models called Generative Models. A Generative Model doesn't just create a decision boundary, but understands the underlying distribution of values. Using this insight, a generative model can also generate new data or classify a given input data. Here are some examples of Generative Models:
 
- 
-•	Producing a new song or combine two genres of songs to create an entirely different song
-•	Synthesizing new images from existing images
-•	[Upgrading images](https://arxiv.org/pdf/1703.04244.pdf) to a higher resolution in order to remove fuzziness, improve image quality, and much more
+ *Producing a new song or combine two genres of songs to create an entirely different song
+ *Synthesizing new images from existing images
+ *[Upgrading images](https://arxiv.org/pdf/1703.04244.pdf) to a higher resolution in order to remove fuzziness, improve image quality, and much more
 
 
 In general, Generative Models can be used on any form of data to learn the underlying distribution, generate new data, and augment existing data.
