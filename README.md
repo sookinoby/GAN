@@ -126,16 +126,16 @@ def transform(data, target_wd, target_ht):
     data = mx.image.imresize(data, target_wd, target_ht)
     # transpose from (target_wd, target_ht, 3)
     # to (3, target_wd, target_ht)
-    data = nd.transpose(data, (2,0,1))
+    data = nd.transpose(data, (2, 0, 1))
     # normalize to [-1, 1]
     data = data.astype(np.float32)/127.5 - 1
-    return data.reshape((1,) + data.shape)
+    return data.reshape((1, ) + data.shape)
 ```
 The getImageList function reads the images from the training_folder and returns the images as a list, which is then transformed into a MxNet array.
 
 ```python
 # Read images, call the transform function, attach it to list
-def getImageList(base_path,training_folder):
+def getImageList(base_path, training_folder):
     img_list = []
     for train in training_folder:
         fname = base_path + train.image
@@ -145,7 +145,7 @@ def getImageList(base_path,training_folder):
     return img_list
 
 base_path = 'brine_datasets/jayleicn/anime-faces/images/'
-img_list = getImageList('brine_datasets/jayleicn/anime-faces/images/',training_fold)
+img_list = getImageList('brine_datasets/jayleicn/anime-faces/images/', training_fold)
 ```
 
 
@@ -159,9 +159,9 @@ This is very similar to how a decoder unit in an [autoencoder](https://en.wikipe
 
 ```python
 
-# Simple generator. You can use any model of your choice (VGG, AlexNet, etc.) but ensure that it upscales the latent variable (random vectors) to a 64 * 64 * 3 channel image - the output image we want the generative model to produce.
-With netG.name_scope():
-     # input is random_z (batchsize X 150 X 1), going into a transposed convolution
+# simple generator. Use any models but should upscale the latent variable(randome vectors) to 64 * 64 * 3 channel image
+with netG.name_scope():
+     # input is random_z (batchsize X 150 X 1), going into a tranposed convolution
     netG.add(nn.Conv2DTranspose(ngf * 8, 4, 1, 0))
     netG.add(nn.BatchNorm())
     netG.add(nn.Activation('relu'))
@@ -179,8 +179,8 @@ With netG.name_scope():
     netG.add(nn.Activation('relu'))
     # output size. (ngf*8) x 32 x 32
     netG.add(nn.Conv2DTranspose(nc, 4, 2, 1))
-    netG.add(nn.Activation('tanh')) # use tanh  instead of relu, as we need an output that is between -1 to 1
-    # Remember that the input image is normalized between -1 to 1, so should the output too
+    netG.add(nn.Activation('tanh')) # use tanh , we need an output that is between -1 to 1, not 0 to 1 
+    # Rememeber the input image is normalised between -1 to 1, so should be the output
     # output size. (nc) x 64 x 64
 ```
 
@@ -219,40 +219,41 @@ Figure 4.
 The real images are given a label of 1, and the fake images are given a label of 0.
 
 ```python
-#real label is the labels of real image
-real_label = nd.ones((batch_size,), ctx=ctx)
-#fake labels is label associated with fake image
-fake_label = nd.zeros((batch_size,),ctx=ctx)
+# real label is the labels of real image
+real_label = nd.ones((batch_size, ), ctx=ctx)
+
+# fake labels is label associated with fake image
+fake_label = nd.zeros((batch_size, ), ctx=ctx)
 ```
 ### Training the discriminator
 
 A real image is now passed to the discriminator to determine whether it is real or fake, and the loss associated with the prediction is calculated as errD_real.
 
  ```python
-# train with real image
-output = netD(data).reshape((-1, 1))
-#The loss is a real valued number
-errD_real = loss(output, real_label)
+   # train with real image
+   output = netD(data).reshape((-1, 1))
+   # The loss is a real valued number
+   errD_real = loss(output, real_label)
 ```
 
 In the next step, a random noise random_z is passed to the generator network to produce a random image. This image is then passed to the discriminator to classify it as real (1) or fake (0), thereby creating a loss, errD_fake. This errD_fake is high if the discriminator wrongly classifies the fake image (label 0) as a true image (label 1). This errD_fake is back propagated to train the discriminator to classify the fake image as a fake image (label 0). This helps the discriminator improve its accuracy.
 
  ```python
-#train with fake image, see what the discriminator predicts
-#creates fake image
-fake = netG(random_z)
-# pass it to the discriminator
-output = netD(fake.detach()).reshape((-1, 1))
-errD_fake = loss(output, fake_label)
+	train with fake image, see the what the discriminator predicts
+    # creates fake imge
+    fake = netG(random_z)
+    # pass it to discriminator
+    output = netD(fake.detach()).reshape((-1, 1))
+    errD_fake = loss(output, fake_label)
  ```
 
 The total error is back propagated to tune the weights of the discriminator.
 
  ```python
-#compute the total error for fake image and the real image
-errD = errD_real + errD_fake
-#improve the discriminator skill by back propagating the error
-errD.backward()
+ # compute the total error for fake image and the real image
+ errD = errD_real + errD_fake
+ # improve the discriminator skill by back propagating the error
+ errD.backward()
 ```
 
 ### Training the generator
@@ -274,13 +275,13 @@ We can use the generator network to create new fake images by providing 150 rand
 Figure 5. ![Alt text](images/GAN_image.png?raw=true "GAN generated images")<br />
 
 ```
-#Let's generate some random images
+# Let's generate some random images
 num_image = 8
 for i in range(num_image):
-    # random input for generating images
-    latent_z = mx.nd.random_normal(0, 1, shape=(1, latent_z_size, 1, 1), ctx=ctx)
+    # random input for the generating images
+    random_z = mx.nd.random_normal(0, 1, shape=(1, latent_z_size, 1, 1), ctx=ctx)
     img = netG(random_z)
-    plt.subplot(2,4,i+1)
+    plt.subplot(2, 4, i+1)
     visualize(img[0])
 plt.show()
 ```
