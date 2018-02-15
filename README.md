@@ -55,7 +55,7 @@ We can then tweak the Generative model to classify an animal by adding a softmax
 
 ### Preparing your environment
 
-If you're working in the AWS Cloud, you can save yourself a lot of installation work by using an [Amazon Machine Image](https://aws.amazon.com/marketplace/pp/B01M0AXXQB#support), pre-configured for deep learning.  If you have done this, skip steps 1-5 below.
+If you're working in the AWS Cloud, you can save yourself a lot of installation work by using an [Amazon SageMaker](https://aws.amazon.com/sagemaker/), pre-configured for deep learning.  If you have done this, skip steps 1-5 below.
 
 If you are using a Conda environment, remember to install pip inside conda by typing 'conda install pip' after you activate an environment.  This will save you a lot of problems down the road.
 
