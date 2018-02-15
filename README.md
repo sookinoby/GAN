@@ -44,9 +44,7 @@ Examples of Discriminative models  include logistic regression and Support Vecto
 
 ### Using Discriminative and Generative Models in neural networks
 
-In this article, we’ll want train a Discriminative model called "m-dis" and a Generative model called "m-gen-partial" to find the difference between a dog and a cat. We’ll use them together to create a Generative Adversarial Network (GAN), which potentially can improve a model over time through iteration to make better classifications.
-
-The Discriminative Model will have a [softmax layer](https://mxnet.incubator.apache.org/api/python/gluon.html#mxnet.gluon.loss.SoftmaxCrossEntropyLoss) as the final layer to do binary classification.  Except for the input layer an the softmax layer, all the other layers (the hidden layers) try to learn a [representation](http://www.deeplearningbook.org/contents/representation.html) of the input (cat or dog?) that can reduce the loss at the final layer. The hidden layer may learn a rule like,
+Suppose, we want train a Discriminative model called "m-dis" and a Generative model called "m-gen-partial" to find the difference between a dog and a cat. The Discriminative Model will have a [softmax layer](https://mxnet.incubator.apache.org/api/python/gluon.html#mxnet.gluon.loss.SoftmaxCrossEntropyLoss) as the final layer to do binary classification.  Except for the input layer an the softmax layer, all the other layers (the hidden layers) try to learn a [representation](http://www.deeplearningbook.org/contents/representation.html) of the input (cat or dog?) that can reduce the loss at the final layer. The hidden layer may learn a rule like,
 “if the eyes are blue and the image has brown stripes, it is a cat, otherwise it is a dog,” ignoring other important features like the shape of the body, height, etc. 
 
 In contrast, the Generative model is trained to learn a lower-dimension representation (distribution) that can represent the input image of cat or dog. The final layer is not a softmax layer for classification. The hidden layer can learn about the general features of a cat or dog (shape, color, height, etc.). Moreover, the dataset needs no labelling, as we are training only to extract features to represent the input data.
@@ -64,22 +62,30 @@ If you are using a Conda environment, remember to install pip inside conda by ty
 Here's how to get set up:
 
 1. Install [Anaconda](https://www.continuum.io/downloads), a package manager. It is easier to install Python libraries using Anaconda.
+   You can use this command
+    curl -O https://repo.continuum.io/archive/Anaconda3-4.2.0-Linux-x86_64.sh
+    chmod +x Anaconda3-4.2.0-Linux-x86_64.sh 
+	./Anaconda3-4.2.0-Linux-x86_64.sh 
 2. Install [scikit-learn](http://scikit-learn.org/stable/install.html), a general-purpose scientific computing library. We'll use this to pre-process our data. You can install it with 'conda install scikit-learn'.
 3. Grab the Jupyter Notebook, with 'conda install jupyter notebook'.
-4. Get [MXNet](https://github.com/apache/incubator-mxnet/releases), an open source deep learning library. The Python notebook was tested on version 0.12.0 of MxNet, and  you can install it using pip as follows: pip install mxnet==0.12.0
+4. Get [MXNet](https://mxnet.incubator.apache.org), an open source deep learning library. The Python notebook was tested on version 0.12.0 of MxNet, and you can install using pip as follows: pip install mxnet-cu90 (if you have a GPU) else use pip install mxnet --pre. Please see the [documentation](http://scikit-learn.org/stable/install.html) for details 
+
 5. After you activate the anaconda environment, type these commands in it: ‘source activate mxnet'
 
 The consolidated list of commands is:
 
 ```bash
+curl -O https://repo.continuum.io/archive/Anaconda3-4.2.0-Linux-x86_64.sh
+chmod +x Anaconda3-4.2.0-Linux-x86_64.sh 
+./Anaconda3-4.2.0-Linux-x86_64.sh 
 conda install pip
 pip install opencv-python
 conda install scikit-learn
 conda install jupyter notebook
-pip install mxnet==0.12.0
+pip install mxnet-cu90
 ```
 
-6. You can download the [ MXNet notebook for this part of the tutorial](https://github.com/sookinoby/generative-models/blob/master/Test-rnn.ipynb), where we've created and run all this code, and play with it! Adjust the hyperparameters and experiment with different approaches to neural network architecture.
+6. You can download the [ MXNet notebook for this part of the tutorial](https://github.com/sookinoby/GAN/blob/master/GAN.ipynb), where we've created and run all this code, and play with it! Adjust the hyperparameters and experiment with different approaches to neural network architecture.
 
 ## Generative Adversarial Network (GAN)
 
@@ -92,7 +98,6 @@ Let's assume that there is a bank (discriminator) that detects whether a given c
 If the bank tells the fraudster why it classified these notes as fake,  he can improve his model based on those reasons. After multiple iterations, the bank cannot tell the difference between the "real" and "fake" currency. This is the idea behind GAN.
 
 So now let's implement a simple GAN network to generate new anime images. I encourage you to download [the notebook](https://github.com/sookinoby/generative-models/blob/master/GAN.ipynb).
-You are welcome to adjust the hyperparameters and experiment with different approaches to neural network architecture.
 
 ### Preparing the Dataset
 
